@@ -1,11 +1,10 @@
 'use strict';
 
+// dom
 const {section, button, span} = require('iblokz/adapters/vdom');
+// components
+const counter = require('./counter');
 
 module.exports = ({state, actions}) => section('#ui', [
-	section('.counter', [
-		button({on: {click: () => actions.decr()}}, 'Decrease'),
-		span(`Number is: ${state.number}`),
-		button({on: {click: () => actions.incr()}}, 'Increase')
-	])
+	counter({state, actions})
 ]);
