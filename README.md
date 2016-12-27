@@ -1,18 +1,39 @@
 # UI Boilerplate
-This is a ui boilerplate repo with instructions how to set it up from scratch.
+A demo app that showcases my latest approach to front-end app architecture
+and would serve as a starting point for new apps.
+
+Currently it features:
+- purely npm based dependency management, task automation and asset pipeline
+- frp based architecture with redux like state machine and virtual dom
+- modeled in a way that is as close as possible to the way you might explain it
+```js
+// user takes actions that change the state
+const state$ = actions$.scan((state, change) => change(state));
+```
+- provides hot reloading for the actions tree and ui components and livereload for css
+
+
+In this README I've provided sufficient steps so that you can set this app from scratch.
+Though it might not be synced with it's latest state.
+
+I intend to expand it further with explanations and documentation.
 
 ## Quick Start
 ```sh
+# this will clone the repo, install the dependencies and start the build and watch tasks
 git clone https://github.com/iblokz/ui-boilerplate.git ui-boilerplate && cd $_ && npm i && npm start
 ```
 
-## Notes
-Preview command:
+## From Scratch
+
+### Notes
+You can install and use `tree` to preview changes you make to the file structure
 ```sh
+# show all files, 3 levels deep, directories first, ignore ".git" dir
 tree -a -L 3 --dirsfirst -I ".git"
 ```
 
-## Init Project
+### Init Project
 ```sh
 npm init && git init
 ```
@@ -225,9 +246,9 @@ src/js
   "build:js": "browserify src/js/index.js -o dist/js/app.js",
   "build:sass": "node-sass --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
   "watch": "npm run watch:js & npm run watch:sass & npm run livereload",
-  "watch:js": "watchify src/js/index.js -o dist/js/app.js",
+  "watch:js": "watchify -p browserify-hmr src/js/index.js -o dist/js/app.js",
   "watch:sass": "npm run build:sass -- --watch src/sass/**/*",
-  "livereload": "livereload dist -e 'sass' -d",
+  "livereload": "livereload dist/**/*.css -d",
   "start": "npm run build && serve --path dist & npm run watch"
 },
 ...
@@ -239,16 +260,37 @@ src/js
 'use strict';
 
 // lib
+const Rx = require('rx');
+const $ = Rx.Observable;
+
+// iblokz
 const vdom = require('iblokz/adapters/vdom');
 
 // app
 let actions = require('./actions');
 let ui = require('./ui');
+let actions$;
 
 // hot reloading
+if (module.hot) {
+	// actions
+	actions$ = $.fromEventPattern(
+    h => module.hot.accept("./actions", h)
+	).flatMap(() => {
+		actions = require('./actions');
+		return actions.stream.startWith(state => state);
+	}).merge(actions.stream);
+	// ui
+	module.hot.accept("./ui", function() {
+		ui = require('./ui');
+		actions.stream.onNext(state => state);
+	});
+} else {
+	actions$ = actions.stream;
+}
 
 // actions -> state
-const state$ = actions.stream
+const state$ = actions$
 	.startWith(() => actions.initial)
 	.scan((state, change) => change(state), {})
 	.map(state => (console.log(state), state))
@@ -257,6 +299,7 @@ const state$ = actions.stream
 // state -> ui
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
+
 ```
 
 *src/js/actions/index.js*
@@ -277,15 +320,18 @@ const initial = {
 };
 
 // actions
+const set = number => stream.onNext(state => Object.assign({}, state, {number}));
 const incr = () => stream.onNext(state => Object.assign({}, state, {number: state.number + 1}));
 const decr = () => stream.onNext(state => Object.assign({}, state, {number: state.number - 1}));
 
 module.exports = {
 	stream,
 	initial,
+	set,
 	incr,
 	decr
 };
+
 ```
 
 *src/js/ui/index.js*
@@ -301,4 +347,32 @@ module.exports = ({state, actions}) => section('#ui', [
 		button({on: {click: () => actions.incr()}}, 'Incr')
 	])
 ]);
+```
+
+*src/sass/style.sass*
+```sass
+@import 'font-awesome'
+@import 'bourbon'
+@import 'neat'
+
+body
+	font-family: "Open Sans"
+
+.counter
+	height: 32px
+	line-height: 32px
+	> *
+		height: 32px
+		line-height: 32px
+		display: inline-block
+		font-size: 14px
+		padding: 0px 10px
+	button
+		background: #f5f5f5
+		border: 0px
+		cursor: pointer
+		transition: box-shadow 0.3s
+		box-shadow: 1px 1px 2px #ccc
+		&:hover
+			box-shadow: 1px 1px 5px #aaa
 ```

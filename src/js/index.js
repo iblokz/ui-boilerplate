@@ -15,7 +15,7 @@ let actions$;
 // hot reloading
 if (module.hot) {
 	// actions
-	actions$ = Rx.Observable.fromEventPattern(
+	actions$ = $.fromEventPattern(
     h => module.hot.accept("./actions", h)
 	).flatMap(() => {
 		actions = require('./actions');
