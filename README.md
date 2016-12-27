@@ -2,17 +2,19 @@
 A demo app that showcases my latest approach to front-end app architecture
 and would serve as a starting point for new apps.
 
-Currently it features:
+## Features
 - purely npm based dependency management, task automation and asset pipeline
+- hot module replacement and livereload for css
 - frp based architecture with redux like state machine and virtual dom
 - modeled in a way that is as close as possible to the way you might explain it
+- actions -> state -> ui
+
 ```js
 // user takes actions that change the state
 const state$ = actions$.scan((state, change) => change(state));
 ```
-- provides hot reloading for the actions tree and ui components and livereload for css
 
-
+## This README
 In this README I've provided sufficient steps so that you can set this app from scratch.
 Though it might not be synced with it's latest state.
 
@@ -20,7 +22,7 @@ I intend to expand it further with explanations and documentation.
 
 ## Quick Start
 ```sh
-# this will clone the repo, install the dependencies and start the build and watch tasks
+# clone the repo, install the dependencies and start the build and watch tasks
 git clone https://github.com/iblokz/ui-boilerplate.git ui-boilerplate && cd $_ && npm i && npm start
 ```
 
