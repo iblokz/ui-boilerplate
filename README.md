@@ -38,7 +38,7 @@ tree -a -L 3 --dirsfirst -I ".git"
 npm init && git init
 ```
 
-## Initial Directory Structure
+### Initial Directory Structure
 ```sh
 mkdir -p ./{bin,src/{js,sass,assets},dist/{js,css},lib}
 ```
@@ -56,7 +56,7 @@ mkdir -p ./{bin,src/{js,sass,assets},dist/{js,css},lib}
     └── sass
 ```
 
-## Initial Files
+### Initial Files
 ```sh
 touch bin/{move-assets.js,sass-paths.js}
 touch dist/index.html
@@ -85,7 +85,7 @@ touch ./{.editorconfig,.eslintrc.json,.gitignore}
 └── package.json
 ```
 
-## Files Content
+### Files Content
 *bin/move-assets.js*
 ```js
 'use strict';
@@ -174,19 +174,19 @@ indent_style = tab
 node_modules
 ```
 
-## Install dependencies
+### Install dependencies
 
 ```sh
 npm i -S font-awesome bourbon bourbon-neat snabbdom rx superagent
 ```
 
-### Dev Dependencies
+#### Dev Dependencies
 
 ```sh
 npm i -D browserify watchify browserify-hmr fs-extra node-sass node-serve eslint eslint-config-google@^0.6.*
 ```
 
-### Install and link local dependecies
+#### Install and link local dependecies
 ```sh
 # when developing locally
 npm link iblokz
@@ -220,7 +220,7 @@ npm i -S iblokz/iblokz
 ...
 ```
 
-## Initial Architecture layer
+### Initial App Structure
 
 ```sh
 mkdir -p src/js/{ui,actions,util}
@@ -236,7 +236,7 @@ src/js
 └── index.js
 ```
 
-## Set up build and watch tasks
+### Set up build and watch tasks
 *package.json*
 ```
 ...
@@ -254,7 +254,7 @@ src/js
 ...
 ```
 
-## Initial functionality
+### Initial functionality
 *src/js/index.js*
 ```js
 'use strict';
