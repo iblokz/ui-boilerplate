@@ -1,9 +1,9 @@
 # UI Boilerplate
 This is a ui boilerplate repo with instructions how to set it up from scratch.
 
-## Quick Setup
+## Quick Start
 ```sh
-git clone https://github.com/iblokz/ui-boilerplate.git && cd $_ && npm i && npm start
+git clone https://github.com/iblokz/ui-boilerplate.git ui-boilerplate && cd $_ && npm i && npm start
 ```
 
 ## Notes
