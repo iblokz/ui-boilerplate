@@ -15,27 +15,24 @@ let actions$;
 // hot reloading
 if (module.hot) {
 	// actions
-	const reload$ = new Rx.Subject();
-	module.hot.accept("./actions", function() {
+	actions$ = Rx.Observable.fromEventPattern(
+    h => module.hot.accept("./actions", h)
+	).flatMap(() => {
 		actions = require('./actions');
-		reload$.onNext(actions.stream);
-	});
+		return actions.stream.startWith(state => state);
+	}).merge(actions.stream);
 	// ui
 	module.hot.accept("./ui", function() {
 		ui = require('./ui');
 		actions.stream.onNext(state => state);
 	});
-	actions$ = $.merge(
-		actions.stream.startWith(() => actions.initial),
-		reload$.concatAll()
-	);
 } else {
-	actions$ = actions.stream
-		.startWith(() => actions.initial);
+	actions$ = actions.stream;
 }
 
 // actions -> state
 const state$ = actions$
+	.startWith(() => actions.initial)
 	.scan((state, change) => change(state), {})
 	.map(state => (console.log(state), state))
 	.share();
