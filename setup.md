@@ -226,4 +226,72 @@ src/js
 ...
 ```
 
-## Intial functionality
+## Initial functionality
+*src/js/index.js*
+```js
+'use strict';
+
+// lib
+const vdom = require('iblokz/adapters/vdom');
+
+// app
+let actions = require('./actions');
+let ui = require('./ui');
+
+// hot reloading
+
+// actions -> state
+const state$ = actions.stream
+	.startWith(() => actions.initial)
+	.scan((state, change) => change(state), {})
+	.map(state => (console.log(state), state))
+	.share();
+
+// state -> ui
+const ui$ = state$.map(state => ui({state, actions}));
+vdom.patchStream(ui$, '#ui');
+```
+
+*src/js/actions/index.js*
+```js
+'use strict';
+
+// lib
+const Rx = require('rx');
+const $ = Rx.Observable;
+const {Subject} = Rx;
+
+// stream
+const stream = new Subject();
+
+// initial
+const initial = {
+	number: 0
+};
+
+// actions
+const incr = () => stream.onNext(state => Object.assign({}, state, {number: state.number + 1}));
+const decr = () => stream.onNext(state => Object.assign({}, state, {number: state.number - 1}));
+
+module.exports = {
+	stream,
+	initial,
+	incr,
+	decr
+};
+```
+
+*src/js/ui/index.js*
+```js
+'use strict';
+
+const {section, button, span} = require('iblokz/adapters/vdom');
+
+module.exports = ({state, actions}) => section('#ui', [
+	section('.counter', [
+		button({on: {click: () => actions.decr()}}, 'Decr'),
+		span(`Number: ${state.number}`),
+		button({on: {click: () => actions.incr()}}, 'Incr')
+	])
+]);
+```
