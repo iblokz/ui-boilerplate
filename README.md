@@ -12,7 +12,6 @@ Preview command:
 tree -a -L 3 --dirsfirst -I ".git"
 ```
 
-
 ## Init Project
 ```sh
 npm init && git init
