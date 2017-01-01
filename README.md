@@ -4,7 +4,7 @@ and would serve as a starting point for new apps.
 
 ## Features
 - purely npm based dependency management, task automation and asset pipeline
-- hot module replacement and livereload for css
+- hot module replacement and css livereload
 - frp based architecture with redux like state machine and virtual dom
 - modeled in a way that is as close as possible to the way you might explain it
 - actions -> state -> ui

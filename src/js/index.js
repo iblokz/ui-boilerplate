@@ -6,9 +6,12 @@ const $ = Rx.Observable;
 
 // iblokz
 const vdom = require('iblokz/adapters/vdom');
+const obj = require('iblokz/common/obj');
+const arr = require('iblokz/common/arr');
 
 // app
-let actions = require('./actions');
+const app = require('./util/app');
+let actions = app.adapt(require('./actions'));
 let ui = require('./ui');
 let actions$;
 
@@ -18,7 +21,7 @@ if (module.hot) {
 	actions$ = $.fromEventPattern(
     h => module.hot.accept("./actions", h)
 	).flatMap(() => {
-		actions = require('./actions');
+		actions = app.adapt(require('./actions'));
 		return actions.stream.startWith(state => state);
 	}).merge(actions.stream);
 	// ui
