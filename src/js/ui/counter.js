@@ -1,6 +1,6 @@
 'use strict';
 
-const {section, button, span} = require('iblokz/adapters/vdom');
+const {section, button, span} = require('iblokz-snabbdom-helpers');
 
 module.exports = ({state, actions}) => section('.counter', [
 	button({on: {click: () => actions.decr()}}, 'Decrease'),

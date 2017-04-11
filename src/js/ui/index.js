@@ -1,7 +1,7 @@
 'use strict';
 
 // dom
-const {section, button, span} = require('iblokz/adapters/vdom');
+const {section, button, span} = require('iblokz-snabbdom-helpers');
 // components
 const counter = require('./counter');
 
