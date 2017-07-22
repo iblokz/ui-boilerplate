@@ -1,18 +1,26 @@
 'use strict';
 
+const {obj, arr} = require('iblokz-data');
+
+// namespaces=
+const counter = require('./counter');
+
 // initial
 const initial = {
-	number: 0
 };
 
 // actions
-const set = number => state => Object.assign({}, state, {number});
-const incr = () => state => Object.assign({}, state, {number: state.number + 1});
-const decr = () => state => Object.assign({}, state, {number: state.number - 1});
+const set = (key, value) => state => obj.patch(state, key, value);
+const toggle = key => state => obj.patch(state, key, !obj.sub(state, key));
+const arrToggle = (key, value) => state =>
+	obj.patch(state, key,
+		arr.toggle(obj.sub(state, key), value)
+	);
 
 module.exports = {
 	initial,
+	counter,
 	set,
-	incr,
-	decr
+	toggle,
+	arrToggle
 };

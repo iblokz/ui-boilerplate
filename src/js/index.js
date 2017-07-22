@@ -37,8 +37,10 @@ const state$ = actions$
 	.startWith(() => actions.initial)
 	.scan((state, change) => change(state), {})
 	.map(state => (console.log(state), state))
-	.share();
+	.publish();
 
 // state -> ui
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
+
+state$.connect();

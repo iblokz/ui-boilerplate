@@ -10,18 +10,19 @@
     "build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
     "watch": "npm run watch:js & npm run watch:sass & npm run livereload",
     "watch:js": "watchify -p browserify-hmr src/js/index.js -o dist/js/app.js --debug",
-    "watch:sass": "npm run build:sass -- --watch src/sass/**/*",
+    "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
     "livereload": "livereload dist/**/*.css -d",
-    "start": "npm run build && serve --path dist & npm run watch"
+		"start": "npm run build && serve --path dist & npm run watch",
+		"sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Alex Milanov <alex@i4web.biz>",
+  "license": "MIT",
   "dependencies": {
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
     "font-awesome": "^4.7.0",
     "iblokz-data": "^1.0.2",
-    "iblokz-snabbdom-helpers": "^1.0.0",
+    "iblokz-snabbdom-helpers": "^1.1.0",
     "rx": "^4.1.0",
     "snabbdom": "^0.5.4",
     "superagent": "^3.3.1"

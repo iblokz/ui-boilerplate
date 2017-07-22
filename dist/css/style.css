@@ -2336,20 +2336,36 @@ html {
   box-sizing: inherit; }
 
 body {
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  box-sizing: border-box;
   font-family: "Open Sans"; }
 
-.counter {
+.left {
+  float: left; }
+
+.text-left {
+  text-align: left; }
+
+.right {
+  float: right; }
+
+.text-right {
+  text-align: right; }
+
+#ui .counter {
   height: 32px;
   line-height: 32px; }
-  .counter > * {
+  #ui .counter > * {
     float: left; }
-  .counter > span {
+  #ui .counter > span {
     height: 32px;
     line-height: 32px;
     display: inline-block;
     font-size: 14px;
     padding: 0px 10px; }
-  .counter button {
+  #ui .counter button {
     display: inline-block;
     box-sizing: border-box;
     height: 32px;
@@ -2363,11 +2379,11 @@ body {
     transition: box-shadow 0.3s, background 0.3s;
     box-shadow: 1px 1px 2px #ccc;
     outline: none; }
-    .counter button:active {
+    #ui .counter button:active {
       padding: 11px 10px 9px 10px; }
-    .counter button:active {
+    #ui .counter button:active {
       outline: none; }
-    .counter button:hover {
+    #ui .counter button:hover {
       box-shadow: 1px 1px 5px #aaa;
       color: #000; }
 
