@@ -6,15 +6,15 @@
   "scripts": {
     "build": "npm run build:assets && npm run build:js && npm run build:sass",
     "build:js": "browserify src/js/index.js -o dist/js/app.js --debug",
-		"build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
+    "build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
     "build:assets": "node bin/move-assets.js",
     "watch": "npm run watch:js & npm run watch:sass & npm run watch:assets & npm run livereload",
     "watch:js": "watchify -p browserify-hmr src/js/index.js -o dist/js/app.js --debug",
     "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
     "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
     "livereload": "livereload dist/**/*.css -d",
-		"start": "npm run build && serve --path dist & npm run watch",
-		"sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
+    "start": "npm run build && serve --path dist & npm run watch",
+    "sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
   },
   "author": "Alex Milanov <alex@i4web.biz>",
   "license": "MIT",
@@ -22,8 +22,8 @@
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
     "font-awesome": "^4.7.0",
-    "iblokz-data": "^1.0.2",
-    "iblokz-snabbdom-helpers": "^1.1.0",
+    "iblokz-data": "^1.2.0",
+    "iblokz-snabbdom-helpers": "^1.2.0",
     "rx": "^4.1.0",
     "snabbdom": "^0.5.4",
     "superagent": "^3.3.1"

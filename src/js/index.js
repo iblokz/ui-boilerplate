@@ -13,6 +13,7 @@ const app = require('./util/app');
 let actions = app.adapt(require('./actions'));
 let ui = require('./ui');
 let actions$;
+const state$ = new Rx.BehaviorSubject();
 
 // hot reloading
 if (module.hot) {
@@ -33,14 +34,23 @@ if (module.hot) {
 }
 
 // actions -> state
-const state$ = actions$
+actions$
+	.map(action => (
+		action.path && console.log(action.path.join('.'), action.payload),
+		console.log(action),
+		action
+	))
 	.startWith(() => actions.initial)
 	.scan((state, change) => change(state), {})
 	.map(state => (console.log(state), state))
-	.publish();
+	.subscribe(state => state$.onNext(state));
 
 // state -> ui
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
 
-state$.connect();
+// livereload impl.
+if (module.hot) {
+	document.write(`<script src="http://${(location.host || 'localhost').split(':')[0]}` +
+	`:35729/livereload.js?snipver=1"></script>`);
+}
